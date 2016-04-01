@@ -50,6 +50,7 @@ void numbers::bucketing(int max_b, vector<double> &bounds) {
 			bounds.push_back(data[m]);
 		}
 	}
+
 }
 
 
