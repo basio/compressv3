@@ -24,6 +24,9 @@
     <ClCompile Include="compress.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="buckets.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="compress.h">
@@ -33,6 +36,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Numbers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="util.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="buckets.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

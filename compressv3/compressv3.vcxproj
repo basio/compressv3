@@ -143,13 +143,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="bucket.cc" />
+    <ClCompile Include="buckets.cc" />
     <ClCompile Include="compress.cc" />
     <ClCompile Include="numbers.cc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bucket.h" />
+    <ClInclude Include="buckets.h" />
     <ClInclude Include="compress.h" />
     <ClInclude Include="Numbers.h" />
+    <ClInclude Include="util.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
