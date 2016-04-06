@@ -43,6 +43,7 @@ int compare(const void *a, const  void *b)
 }
 
 void numbers::bucketing(int max_b, vector<bucket> &buckets) {
+#if 0
 	vector<int> bounds;
 	
 	bounds.reserve(1<<(int) log2(max_b));
@@ -70,18 +71,17 @@ void numbers::bucketing(int max_b, vector<bucket> &buckets) {
 		for (int i = 1; i < bounds.size() - 1; i += 1) {
 			buckets.push_back(bucket(bounds[i] + 1, bounds[i + 1]));
 		}
-	
+#endif
 	}
 
 void numbers::divide_index(int st, int end) {
-	std::nth_element(data + st,data+(st+end)/2, data + end+1);
+	std::nth_element(data + st,data+(st+end)/2, data + end);
 }
 
 void numbers::init(int st, int end) {
-	auto result = minmax_element(data + st , data + end+1);
+	auto result = minmax_element(data + st , data + end);
 	swap(data[st], data[result.first - data]);
 	swap(data[end], data[result.second - data]);
-
 }
 
 int numbers::cnt() {

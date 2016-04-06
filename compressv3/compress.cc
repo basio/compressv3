@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
 
 	buckets _buckets;
 	bound_t sz = compress::incremental_divide(argv[1], _buckets);
-	_buckets.sort();
+	//	_buckets.sort();
 	bound_t ss = compress::WriteCompressedFile("c:/data/o", _buckets);
 	clock_t end = clock();
 
@@ -60,43 +60,71 @@ int compress::incremental_divide(char* filename, buckets &bounds) {
 	for (int i = 0; i < 32; i++)
 		sz_s[i] = i*numbers::cnt();
 
-	bucket b(0, numbers::cnt() - 1);
-	buckets_bits[0].add(b);
+
+	size_t b_ij = buckets::createbucket(0, numbers::cnt() - 1);
+	buckets_bits[0].add_bucket_id(b_ij);
+
 	number_of_buckets = 1;
 	for (int i = 0; i < 32; i++) {
 
 		buckets bs = buckets_bits[i];
 
 		//now iterator over (can have a priority quue)
+		priority_queue <pair<size_t,size_t>,vector<pair<size_t, size_t>>, PairCmp> to_process;
 		for (int j = 0; j < bs.length(); j++) {
+			size_t a = bs.get_id(j);
+			size_t b = buckets::get(a).size_in_bits;
+			to_process.push(pair<size_t,size_t>(a,b));
+		}
+
+		while (!to_process.empty()) {
 			bound_t sz = 0;
-			bucket b1, b2;
-			bucket &b = bs.at(j);
-			b.divide(b1, b2, Strategy::divide_index);
-			sz = b1.get_size_in_bits() + b2.get_size_in_bits();
+			size_t p1, p2;
+			pair<size_t, size_t> p_ = to_process.top();
+
+			bucket b = buckets::get(p_.first);
+
+			to_process.pop();
+
+			bucket::divide(b,p1, p2, Strategy::divide_index);
+		
+			bucket b_1 = buckets::get(p1);
+			bucket b_2 = buckets::get(p2);
+
+			sz = b_1.get_size_in_bits() + b_2.get_size_in_bits();
 
 			int size_2 = ceil(log2(bs.length() + 1));
 			if (size_2 == i) {
 				if (b.get_size_in_bits() > sz) {
-					bs.remove(j);
-					bs.add(b1);
-					bs.add(b2);
+					bs.remove_bucket_id(b.id);
+					bs.add_bucket_id(p1);
+					bs.add_bucket_id(p2);
+					to_process.push(pair<size_t, size_t>(p1, b_1.size_in_bits));
+					to_process.push(pair<size_t, size_t>(p2, b_2.size_in_bits));
 				}
 			}
 			else {
 				//copy to bs[i]
 				if (buckets_bits[size_2].length() == 0) {
 					for (int z = 0; z < bs.length(); z++) {
-						buckets_bits[size_2].add(bs.at(z));
+						buckets_bits[size_2].add_bucket_id(bs.get_id(z));
 					}
 				}
 				if (b.get_size_in_bits() > sz) {
-					buckets_bits[size_2].remove(b);
-					buckets_bits[size_2].add(b1);
-					buckets_bits[size_2].add(b2);
+					buckets_bits[size_2].remove_bucket_id(b.id);
+					buckets_bits[size_2].add_bucket_id(p1);
+					buckets_bits[size_2].add_bucket_id(p2);
 				}
 			}
 		}
+
+		/*if (i == 4) {
+			for each (bucket b in buckets::_buckets)
+			{
+				cout << b << endl;
+			}
+			return 00;
+		}*/
 		//update the sum
 		sz_s[i] += bs.total_size();
 		if (i > 0) {
@@ -112,7 +140,7 @@ int compress::incremental_divide(char* filename, buckets &bounds) {
 
 			if (increasing > 2) {
 				bounds = buckets_bits[min_b];
-				return min_b; 
+				return min_b;
 			}
 		}
 	}
@@ -121,6 +149,7 @@ int compress::incremental_divide(char* filename, buckets &bounds) {
 }
 
 long compress::writeHeader(FILE * f, buckets &_buckets) {
+#if 0
 	//calculate the bits needed
 	int size_bytes = 0;
 
@@ -171,6 +200,8 @@ long compress::writeHeader(FILE * f, buckets &_buckets) {
 	free(bf);
 
 	return size_bytes;
+#endif
+	return 0;
 }
 
 vector<bucket>::const_iterator find(vector<bucket>::const_iterator first, vector<bucket>::const_iterator last, const int val)
@@ -190,8 +221,8 @@ vector<bucket>::const_iterator find(vector<bucket>::const_iterator first, vector
 	return first;
 }
 
-bound_t compress::WriteCompressedFile(char * outfile,buckets& _buckets) {
-
+bound_t compress::WriteCompressedFile(char * outfile, buckets& _buckets) {
+#if 0
 	long sz = 0;
 	FILE * out = fopen(outfile, "wb");
 	int bucket_bits = ceil(log2(_buckets.length()));
@@ -227,6 +258,8 @@ bound_t compress::WriteCompressedFile(char * outfile,buckets& _buckets) {
 	free(bf);
 	fclose(out);
 	return sz;
+#endif
+	return 0;
 }
 
 

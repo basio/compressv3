@@ -151,7 +151,7 @@
     <ClInclude Include="bucket.h" />
     <ClInclude Include="buckets.h" />
     <ClInclude Include="compress.h" />
-    <ClInclude Include="Numbers.h" />
+    <ClInclude Include="numbers.h" />
     <ClInclude Include="util.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

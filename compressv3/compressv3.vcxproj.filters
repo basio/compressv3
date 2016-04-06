@@ -35,13 +35,13 @@
     <ClInclude Include="bucket.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Numbers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="buckets.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="numbers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

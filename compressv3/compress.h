@@ -10,6 +10,13 @@ public:
 	static bound_t WriteCompressedFile(char *outfile, buckets &bounds);
 };
 
+class PairCmp
+{
+public:
+	bool operator()(pair<size_t, size_t> n1, pair<size_t, size_t> n2) {
+		return n1.second>n2.second;
+	}
+};
 #endif
 
 int main(int argc, char * argv[]);
